@@ -1,0 +1,35 @@
+<link rel="import" href="../polymer/polymer.html">
+
+<!--
+`dc-schedule`
+A schedule view
+
+@demo demo/index.html
+-->
+
+<dom-module id="dc-schedule">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <h2>Hello [[prop1]]</h2>
+  </template>
+
+  <script>
+    class MyElement extends Polymer.Element {
+      static get is() { return 'dc-schedule'; }
+      static get properties() {
+        return {
+          prop1: {
+            type: String,
+            value: 'dc-schedule'
+          }
+        };
+      }
+    }
+
+    window.customElements.define(MyElement.is, MyElement);
+  </script>
+</dom-module>
