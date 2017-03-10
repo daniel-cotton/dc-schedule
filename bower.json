@@ -12,6 +12,8 @@
     "webcomponentsjs": "webcomponents/webcomponentsjs#^1.0.0-rc.5"
   },
   "resolutions": {
-    "polymer": "^2.0.0-rc.2"
+    "polymer": "^2.0.0-rc.2",
+    "iron-flex-layout": "2.0-preview",
+    "webcomponentsjs": "v1.0.0-rc.5"
   }
 }
