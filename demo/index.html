@@ -19,10 +19,38 @@
     <div class="vertical-section-container centered">
       <h3>Basic dc-schedule demo</h3>
       <demo-snippet>
-        <template>
-          <dc-schedule></dc-schedule>
+        <template is="dom-bind" id="demo-dom">
+          <dc-schedule events="[[events]]"></dc-schedule>
         </template>
       </demo-snippet>
     </div>
+    <script>
+      var demo = document.querySelector('#demo-dom');
+      window.addEventListener('WebComponentsReady', function(e) {
+        demo.events = [
+          {
+            name: 'Keynote',
+            description: 'The keynote speech',
+            location: 'Grand Hall',
+            start: new Date(2013, 2, 1, 12, 20),
+            end: new Date(2013, 2, 1, 13, 50)
+          },
+          {
+            name: 'Redux Talk',
+            description: 'Flux Guise',
+            location: 'AB123',
+            start: new Date(2013, 2, 1, 13, 20),
+            end: new Date(2013, 2, 1, 14, 50)
+          },
+          {
+            name: 'Polymer Talk',
+            description: 'Web components Guise',
+            location: 'Grand Hall',
+            start: new Date(2013, 2, 1, 14, 20),
+            end: new Date(2013, 2, 1, 15, 50)
+          },
+        ];
+      });
+    </script>
   </body>
 </html>

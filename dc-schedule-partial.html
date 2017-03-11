@@ -1,10 +1,64 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Title</title>
-</head>
-<body>
+<link rel="import" href="../polymer/polymer.html">
 
-</body>
-</html>
+<!--
+`dc-schedule-partial`
+A schedule view partial - without title
+
+@demo demo/index.html
+-->
+
+<dom-module id="dc-schedule-partial">
+  <template>
+    <custom-style>
+      <style is="custom-style">
+
+      </style>
+    </custom-style>
+    [[scheduleEvents(events)]]
+  </template>
+
+  <script>
+    class DCScheduleView extends Polymer.Element {
+      static get is() { return 'dc-schedule-partial'; }
+      static get properties() {
+        return {
+          events: {
+            type: Array,
+            value: []
+          }
+        };
+      }
+      scheduleEvents(events) {
+        if (events) {
+          var res = events.sort(function (eventa, eventb) {
+            return eventa.start - eventb.start;
+          }).reduce(function (result, event) {
+            var scheduled = false;
+            result = result.map(function (horizontalArray) {
+              if (!scheduled && horizontalArray.length === 0) {
+                horizontalArray.push(event);
+              } else if (!scheduled && horizontalArray.slice(-1).pop().end <= event.start) {
+                horizontalArray.push(event);
+                scheduled = true;
+              }
+              return horizontalArray;
+            });
+            if (!scheduled) {
+              result.push([event]);
+            }
+            return result;
+          }, []);
+          console.log(res);
+          return res;
+        }
+        return [];
+      }
+      connectedCallback() {
+        super.connectedCallback();
+        console.log(this.events);
+      }
+    }
+
+    window.customElements.define(DCScheduleView.is, DCScheduleView);
+  </script>
+</dom-module>

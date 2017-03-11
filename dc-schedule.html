@@ -1,4 +1,5 @@
 <link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="./dc-schedule-partial.html">
 
 <!--
 `dc-schedule`
@@ -56,11 +57,12 @@ A schedule view
     </section>
     <section id="scheduler">
       <p>No events planned...</p>
+      <dc-schedule-partial events="[[events]]"></dc-schedule-partial>
     </section>
   </template>
 
   <script>
-    class MyElement extends Polymer.Element {
+    class DCSchedule extends Polymer.Element {
       static get is() { return 'dc-schedule'; }
       static get properties() {
         return {
@@ -83,6 +85,10 @@ A schedule view
             value:  ["January", "February", "March", "April", "May", "June",
               "July", "August", "September", "October", "November", "December"
             ]
+          },
+          events: {
+            type: Array,
+            value: []
           }
         };
       }
@@ -95,9 +101,35 @@ A schedule view
       getDay(date) {
         return date.getDate();
       }
-
+      connectedCallback() {
+        super.connectedCallback();
+        this.events = [
+          {
+            name: 'Keynote',
+            description: 'The keynote speech',
+            location: 'Grand Hall',
+            start: new Date(2013, 2, 1, 12, 20),
+            end: new Date(2013, 2, 1, 13, 50)
+          },
+          {
+            name: 'Redux Talk',
+            description: 'Flux Guise',
+            location: 'AB123',
+            start: new Date(2013, 2, 1, 13, 20),
+            end: new Date(2013, 2, 1, 14, 50)
+          },
+          {
+            name: 'Polymer Talk',
+            description: 'Web components Guise',
+            location: 'Grand Hall',
+            start: new Date(2013, 2, 1, 14, 20),
+            end: new Date(2013, 2, 1, 15, 50)
+          }
+        ];
+        console.log(this.events);
+      }
     }
 
-    window.customElements.define(MyElement.is, MyElement);
+    window.customElements.define(DCSchedule.is, DCSchedule);
   </script>
 </dom-module>
