@@ -14,7 +14,14 @@ A schedule view partial - without title
 
       </style>
     </custom-style>
-    [[scheduleEvents(events)]]
+    <template is="dom-repeat" items="[[scheduleEvents(events)]]">
+      <p>
+        <template is="dom-repeat" items="[[item]]">
+          [[item.name]] |
+        </template>
+      </p>
+      <hr />
+    </template>
   </template>
 
   <script>
