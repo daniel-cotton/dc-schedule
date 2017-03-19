@@ -11,13 +11,12 @@ addons:
     packages:
     - google-chrome-stable
 before_script:
-- npm install -g bower polylint web-component-tester
+- npm install -g bower web-component-tester
 - npm install
 - bower install
-- polylint
 script:
-- xvfb-run wct
-- if [ "${TRAVIS_PULL_REQUEST}" = "false" ]; then wct -s 'default'; fi
+- xvfb-run wct --skip-plugin sauce
+- if [ "${TRAVIS_PULL_REQUEST}" = "false" ]; then wct --skip-plugin local; fi
 env:
   global:
   - secure: s5tFCULlAqoFFG+K2HeuLLl7cU7CJM//aT7j78HFkQSHQ/OSD5JP2YM3g38hah7FPo3CV7vg289PPDjyI7+MeT1oi2E/bKU88UutxiA4Uk7s/xXM1aZeNegaWgxIc5LyGPYc5p6O23zPCZVeY31wJ9Z0bwtDgIUixn9rxn47V2GexUJsY2lcCFkvSpIynNpv3tlZj8K5KzhSO+bImrbMRfWMr0yeC1MaCjEwyuGwW17teD9gWzZvaRH00cw6WIT0y5lNUaPZ9B7eWqqppzvzWMfaUTqlbnQcCcCip+FdOIoZ9Scd9VGse6N3is2Uz+cBMVGTdaD3jz0OiEf7y+vqJnieEwDiQPVJsWO82kv3wnmWzu6k8sqaF2TvCpBFiWVCZ3PtTtVNuoEhukunByTlWCr035cHr1laawrewnCNisdT3iVtdU1asyv30qAL5F45b3pmTqux2RVcEdBSuQ+1Tj4lZfbd4lX1AtjgcLFezdfNmCgbwa2/2sd1/KgFzjzAhpyAx2ElR5YK4hKTecnXb9QFZknL+2mtlyGbFh6JcFroDPKZlRMs248ZTyQsW7HCr14MruQ56BxiHKloIO97TQ9Lr4tj7ypTtKtplV4NHPUcJtq1aVhgQOpapPXbYNRltr/wnk2Ovh1/a9DRz41ZJcJ+GVNHxKLUT4yd5X0jXec=
