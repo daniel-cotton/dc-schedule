@@ -15,14 +15,16 @@
   <dom-bind id="test-suite">
     <template>
       <test-fixture id="basic">
-        <dc-schedule id="schedule-1" date="[[date]]"
+        <dc-schedule id="schedule-1"
+                     date="[[date]]"
                      min-time="[[minTime]]"
                      max-time="[[maxTime]]"
                      events="[[events]]">
         </dc-schedule>
       </test-fixture>
-      <test-fixture id="no-events">
-        <dc-schedule date="[[date]]"
+      <test-fixture id="fixture-2">
+        <dc-schedule id="no-events"
+                     date="[[date]]"
                      min-time="[[minTime]]"
                      max-time="[[maxTime]]"
                      empty-message="That day appears to be empty!">
@@ -32,9 +34,6 @@
   </dom-bind>
 
     <script>
-      document.getElementById('basic').create();
-      document.getElementById('no-events').create();
-
       var testOne = document.querySelector('#test-suite');
       testOne.date = new Date();
       testOne.minTime = new Date(2013, 2, 1, 9, 0);
@@ -64,10 +63,12 @@
           end: new Date(2013, 2, 1, 15, 50)
         },
       ];
-
+        // Define Schedule
         var schedule;
+
         // Define current as the current date/time
         var current = new Date();
+
         // Define days of week constant
         var week = ['Sunday',
           'Monday',
@@ -76,7 +77,11 @@
           'Thursday',
           'Friday',
           'Saturday'];
+
         // Define month constant
+        const month = ["January", "February", "March", "April", "May", "June",
+          "July", "August", "September", "October", "November", "December"
+        ];
 
         // Run a11y test suite
       suite('dc-schedule A11Y', function() {
@@ -120,12 +125,38 @@
            Test Cases
          */
       suite('dc-schedule Binding', function() {
+        test('day should be shown correctly in html', function() {
+          // Select the first scheduler
+          schedule = document.querySelector('#schedule-1');
+
+          var date = Polymer.dom(schedule).node.$.date;
+
+
+          // Assert that current weekday returned by scheduler
+          // is actually the current weekday
+          assert.equal(date.querySelector('.day').innerText, week[current.getDay()]);
+        });
+        test('month and date should be displayed correctly in HTML', function() {
+          // Select the first scheduler
+          schedule = document.querySelector('#schedule-1');
+
+          var date = Polymer.dom(schedule).node.$.date;
+
+          // Assert that current weekday returned by scheduler
+          // is actually the current weekday
+          assert.equal(date.querySelector('.monthDate').innerText, month[current.getMonth()] + ' ' + current.getDate());
+        });
         test('no-events should display custom text if set', function() {
-          schedule = fixture('no-events');
-          schedule.date = new Date();
-          schedule.minTime = new Date(2013, 2, 1, 9, 0);
-          schedule.maxTime = new Date(2013, 2, 1, 16, 0);
-          assert.equal(schedule.querySelector('#empty-message').innerText, "That day appears to be empty!");
+          // Select the first scheduler
+          schedule = document.querySelector('#no-events');
+
+          var scheduler = Polymer.dom(schedule).node.$.scheduler;
+          var schedulePartial = Polymer.dom(scheduler.querySelector('dc-schedule-partial'));
+
+          // Assert that when no events are present
+          // and a custom message has been set
+          // that the custom message is displayed
+          assert.equal(Polymer.dom(schedulePartial.node.root).querySelector('#empty-message').innerText, "That day appears to be empty!");
         });
       });
     </script>
