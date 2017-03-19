@@ -49,6 +49,18 @@ A schedule view
         .monthDate {
           margin: 0;
         }
+        @media screen and (max-width: 750px) {
+          h2 {
+            font-size: 14px;
+            line-height: 16px;
+            padding-bottom: 8px;
+          }
+          h1 {
+            font-size: 24px;
+            line-height: 28px;
+            font-weight: 300;
+          }
+        }
       </style>
     </custom-style>
     <section id="date">
@@ -57,9 +69,9 @@ A schedule view
     </section>
     <section id="scheduler">
       <dc-schedule-partial events="[[events]]"
-                           min-time="[[minTime]]"
-                           max-time="[[maxTime]]"
-                           event-missing-message="[[eventMissingMessage]]">
+         min-time="[[minTime]]"
+         max-time="[[maxTime]]"
+         empty-message="[[emptyMessage]]">
       </dc-schedule-partial>
     </section>
   </template>
@@ -89,7 +101,7 @@ A schedule view
               "July", "August", "September", "October", "November", "December"
             ]
           },
-          eventMissingMessage: {
+          emptyMessage: {
             type: String,
             value: "No events planned..."
           },

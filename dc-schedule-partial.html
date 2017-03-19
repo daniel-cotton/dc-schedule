@@ -31,7 +31,7 @@ A schedule view partial - without title
           -webkit-box-sizing: border-box;
           -moz-box-sizing: border-box;
           box-sizing: border-box;
-          background-color: white;
+          background-color: rgba(236,239,241,0.6);
           padding: 1em;
           text-align: center;
           font-family: 'Roboto', 'Noto', sans-serif;
@@ -39,12 +39,14 @@ A schedule view partial - without title
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
+          font-size: 15px;
         }
         #headings {
           position: relative;
           height: 25px;
         }
         .timeHeading {
+          height: 25px;
           position: absolute;
           top: auto;
           bottom: auto;
@@ -60,24 +62,44 @@ A schedule view partial - without title
           overflow: hidden;
           text-overflow: ellipsis;
           color: #424242;
-          border-left: solid 4px rgba(236,239,241,0.4);
+          border-left: solid 2px rgba(236,239,241,0.8);
+          font-size: 15px;
+        }
+        .timeHeading > .suffix {
+          display: inline-block;
+        }
+        @media screen and (max-width: 750px) {
+          .row {
+            height: 40px;
+          }
+          .event {
+            font-size: 12px;
+            padding: 1em 0.25em;
+          }
+          .timeHeading {
+            border: 0;
+            padding-left: 0;
+          }
+          .timeHeading > .suffix {
+            display: none;
+          }
         }
       </style>
     </custom-style>
     <template is="dom-if" if="[[!_hasEvents(events)]]">
-      <p>[[eventMissingMessage]]</p>
+      <p>[[emptyMessage]]</p>
     </template>
     <template is="dom-if" if="[[_hasEvents(events)]]">
       <section id="headings">
         <template is="dom-repeat" items="[[_getRangeHeadings(minTime, maxTime)]]" as="hour">
-          <span class="timeHeading" style$="[[hour.style]]">[[hour.title]]</span>
+          <span class="timeHeading" style$="[[hour.style]]">[[hour.title]]<span class="suffix">[[hour.suffix]]</span> </span>
         </template>
       </section>
     </template>
     <template is="dom-repeat" items="[[scheduleEvents(events)]]">
       <div class="row">
         <template is="dom-repeat" items="[[item]]">
-          <div class="event" on-tap="_fireSelected" style$="[[_calcStyle(item)]]">
+          <div class="event" on-tap="_fireSelected" style$="[[_calcStyle(item, _numRange)]]">
             [[item.name]]
           </div>
         </template>
@@ -90,7 +112,7 @@ A schedule view partial - without title
       static get is() { return 'dc-schedule-partial'; }
       static get properties() {
         return {
-          eventMissingMessage: {
+          emptyMessage: {
             type: String,
             value: "No events planned..."
           },
@@ -103,13 +125,17 @@ A schedule view partial - without title
           },
           maxTime: {
             type: Date
+          },
+          _numRange: {
+            type: Number,
+            value: 9
           }
         };
       }
-      _calcStyle(event) {
+      _calcStyle(event, numRange) {
         var style = [
-          'left: ' + (((event.start.getHours() - 9) + (event.start.getMinutes() / 60)) / 9) * 100 + '%;',
-          'width: ' + ((((event.end.getHours() + (event.end.getMinutes() / 60)) - (event.start.getHours() + (event.start.getMinutes() / 60))) / 9 ) * 100) + '%;'
+          'left: ' + (((event.start.getHours() - this.minTime.getHours()) + (event.start.getMinutes() / 60)) / numRange) * 100 + '%;',
+          'width: ' + ((((event.end.getHours() + (event.end.getMinutes() / 60)) - (event.start.getHours() + (event.start.getMinutes() / 60))) / numRange ) * 100) + '%;'
         ];
         if (event.colour) {
           style.push('background-color: ' + event.colour + ';');
@@ -119,21 +145,25 @@ A schedule view partial - without title
       _hasEvents(events) {
         return events && events.length > 0;
       }
-      _to24hr (hour) {
+      _to24hrSuffix (hour) {
         if (hour === 12) {
-          return '12pm';
+          return 'pm';
         }
-        return hour < 12 ? hour + 'am' : hour - 12 + 'pm';
+        return hour < 12 ? 'am' : 'pm';
+      }
+      _to24hr (hour) {
+        return hour <= 12 ? hour : hour - 12;
       }
       _getRangeHeadings(minTime, maxTime) {
-        var numRange = maxTime.getHours() - minTime.getHours();
+        this._numRange = maxTime.getHours() - minTime.getHours();
         var range = [];
         for (var i = minTime.getHours(); i <= maxTime.getHours(); i++) {
           range.push({
             title: this._to24hr(i),
+            suffix: this._to24hrSuffix(i),
             style: [
-              'left: ' + (i - minTime.getHours()) / numRange * 100 + '%;',
-              'width: ' + 1 / numRange * 100 + '%;',
+              'left: ' + (i - minTime.getHours()) / this._numRange * 100 + '%;',
+              'width: ' + 1 / this._numRange * 100 + '%;',
             ].join('')
           });
         }
