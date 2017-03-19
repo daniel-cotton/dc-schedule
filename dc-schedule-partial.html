@@ -1,4 +1,7 @@
 <link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../app-layout/app-grid/app-grid-style.html">
+<link rel="import" href="../paper-material/paper-material.html">
+
 
 <!--
 `dc-schedule-partial`
@@ -10,17 +13,75 @@ A schedule view partial - without title
 <dom-module id="dc-schedule-partial">
   <template>
     <custom-style>
-      <style is="custom-style">
+      <style is="custom-style" include="app-grid-style">
+        :host {
+          font-family: 'Roboto', 'Noto', sans-serif;
+        }
+        .row {
+          margin-bottom: 5px;
+          height: 60px;
+          position: relative;
+        }
 
+        .event {
+          position: absolute;
+          top: auto;
+          bottom: auto;
+          right: auto;
+          -webkit-box-sizing: border-box;
+          -moz-box-sizing: border-box;
+          box-sizing: border-box;
+          background-color: white;
+          padding: 1em;
+          text-align: center;
+          font-family: 'Roboto', 'Noto', sans-serif;
+          -webkit-font-smoothing: antialiased;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+        #headings {
+          position: relative;
+          height: 25px;
+        }
+        .timeHeading {
+          position: absolute;
+          top: auto;
+          bottom: auto;
+          right: auto;
+          text-align: left;
+          -webkit-box-sizing: border-box;
+          -moz-box-sizing: border-box;
+          box-sizing: border-box;
+          padding-left: 0.5em;
+          font-family: 'Roboto', 'Noto', sans-serif;
+          -webkit-font-smoothing: antialiased;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          color: #424242;
+          border-left: solid 4px rgba(236,239,241,0.4);
+        }
       </style>
     </custom-style>
-    <template is="dom-repeat" items="[[scheduleEvents(events)]]">
-      <p>
-        <template is="dom-repeat" items="[[item]]">
-          [[item.name]] |
+    <template is="dom-if" if="[[!_hasEvents(events)]]">
+      <p>[[eventMissingMessage]]</p>
+    </template>
+    <template is="dom-if" if="[[_hasEvents(events)]]">
+      <section id="headings">
+        <template is="dom-repeat" items="[[_getRangeHeadings(minTime, maxTime)]]" as="hour">
+          <span class="timeHeading" style$="[[hour.style]]">[[hour.title]]</span>
         </template>
-      </p>
-      <hr />
+      </section>
+    </template>
+    <template is="dom-repeat" items="[[scheduleEvents(events)]]">
+      <div class="row">
+        <template is="dom-repeat" items="[[item]]">
+          <div class="event" on-tap="_fireSelected" style$="[[_calcStyle(item)]]">
+            [[item.name]]
+          </div>
+        </template>
+      </div>
     </template>
   </template>
 
@@ -29,11 +90,54 @@ A schedule view partial - without title
       static get is() { return 'dc-schedule-partial'; }
       static get properties() {
         return {
+          eventMissingMessage: {
+            type: String,
+            value: "No events planned..."
+          },
           events: {
             type: Array,
             value: []
+          },
+          minTime: {
+            type: Date
+          },
+          maxTime: {
+            type: Date
           }
         };
+      }
+      _calcStyle(event) {
+        var style = [
+          'left: ' + (((event.start.getHours() - 9) + (event.start.getMinutes() / 60)) / 9) * 100 + '%;',
+          'width: ' + ((((event.end.getHours() + (event.end.getMinutes() / 60)) - (event.start.getHours() + (event.start.getMinutes() / 60))) / 9 ) * 100) + '%;'
+        ];
+        if (event.colour) {
+          style.push('background-color: ' + event.colour + ';');
+        }
+        return style.join('');
+      }
+      _hasEvents(events) {
+        return events && events.length > 0;
+      }
+      _to24hr (hour) {
+        if (hour === 12) {
+          return '12pm';
+        }
+        return hour < 12 ? hour + 'am' : hour - 12 + 'pm';
+      }
+      _getRangeHeadings(minTime, maxTime) {
+        var numRange = maxTime.getHours() - minTime.getHours();
+        var range = [];
+        for (var i = minTime.getHours(); i <= maxTime.getHours(); i++) {
+          range.push({
+            title: this._to24hr(i),
+            style: [
+              'left: ' + (i - minTime.getHours()) / numRange * 100 + '%;',
+              'width: ' + 1 / numRange * 100 + '%;',
+            ].join('')
+          });
+        }
+        return range;
       }
       scheduleEvents(events) {
         if (events) {

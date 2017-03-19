@@ -56,8 +56,11 @@ A schedule view
       <h1 class="monthDate">[[getMonth(date)]] [[getDay(date)]]</h1>
     </section>
     <section id="scheduler">
-      <p>No events planned...</p>
-      <dc-schedule-partial events="[[events]]"></dc-schedule-partial>
+      <dc-schedule-partial events="[[events]]"
+                           min-time="[[minTime]]"
+                           max-time="[[maxTime]]"
+                           event-missing-message="[[eventMissingMessage]]">
+      </dc-schedule-partial>
     </section>
   </template>
 
@@ -70,7 +73,7 @@ A schedule view
             type: Date,
             value: new Date()
           },
-          days: {
+          _days: {
             type: Array,
             value: ['Sunday',
                   'Monday',
@@ -80,53 +83,72 @@ A schedule view
                   'Friday',
                   'Saturday']
           },
-          months: {
+          _months: {
             type: Array,
             value:  ["January", "February", "March", "April", "May", "June",
               "July", "August", "September", "October", "November", "December"
             ]
           },
+          eventMissingMessage: {
+            type: String,
+            value: "No events planned..."
+          },
           events: {
             type: Array,
             value: []
+          },
+          minTime: {
+            type: Date,
+            value: new Date(2013, 2, 1, 9, 0)
+          },
+          maxTime: {
+            type: Date,
+            value: new Date(2013, 2, 1, 17, 0)
           }
         };
       }
       getWeekday(date) {
-        return this.days[date.getDay()];
+        return this._days[date.getDay()];
+      }
+      getWeekday(date) {
+        return this._days[date.getDay()];
       }
       getMonth(date) {
-        return this.months[date.getMonth()];
+        return this._months[date.getMonth()];
       }
       getDay(date) {
         return date.getDate();
       }
       connectedCallback() {
         super.connectedCallback();
-        this.events = [
+        this.events2 = [
           {
             name: 'Keynote',
             description: 'The keynote speech',
             location: 'Grand Hall',
-            start: new Date(2013, 2, 1, 12, 20),
-            end: new Date(2013, 2, 1, 13, 50)
+            start: new Date(2013, 2, 1, 9, 20),
+            end: new Date(2013, 2, 1, 13, 50),
+            colour: '#00E4FF'
           },
           {
             name: 'Redux Talk',
             description: 'Flux Guise',
             location: 'AB123',
             start: new Date(2013, 2, 1, 13, 20),
-            end: new Date(2013, 2, 1, 14, 50)
+            end: new Date(2013, 2, 1, 14, 50),
+            colour: '#FFD500'
           },
           {
             name: 'Polymer Talk',
             description: 'Web components Guise',
             location: 'Grand Hall',
-            start: new Date(2013, 2, 1, 14, 20),
-            end: new Date(2013, 2, 1, 15, 50)
-          }
+            start: new Date(2013, 2, 1, 13, 50),
+            end: new Date(2013, 2, 1, 15, 50),
+            colour: '#E6E6E6'
+          },
         ];
-        console.log(this.events);
+        this.minTime = new Date(2013, 2, 1, 9, 0);
+        this.maxTime = new Date(2013, 2, 1, 17, 0);
       }
     }
 

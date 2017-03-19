@@ -3,7 +3,9 @@
   "description": "A schedule view",
   "main": "dc-schedule.html",
   "dependencies": {
-    "polymer": "Polymer/polymer#^2.0.0-rc.2"
+    "polymer": "Polymer/polymer#^2.0.0-rc.2",
+    "paper-material": "PolymerElements/paper-material#2.0-preview",
+    "app-layout": "PolymerElements/app-layout#^0.10.7"
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#2.0-preview",
@@ -14,6 +16,11 @@
   "resolutions": {
     "polymer": "^2.0.0-rc.2",
     "iron-flex-layout": "2.0-preview",
-    "webcomponentsjs": "v1.0.0-rc.5"
+    "webcomponentsjs": "^v1.0.0-rc.5",
+    "paper-material": "2.0-preview",
+    "app-layout": "2.0-preview",
+    "iron-media-query": "2.0-preview",
+    "iron-resizable-behavior": "2.0-preview",
+    "iron-scroll-target-behavior": "2.0-preview"
   }
 }
