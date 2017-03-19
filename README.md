@@ -1,6 +1,6 @@
 # \<dc-schedule\>
 
-A material (ish) design schedule view WebComponent - built upon Polymer 2.0.
+A material design schedule view WebComponent - built upon Polymer 2.0.
 Simply pass an array of events and we'll schedule them to fit & display them for you.
 
 ## Demo
