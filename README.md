@@ -1,38 +1,60 @@
 # \<dc-schedule\>
 
-A schedule view
+A material (ish) design schedule view WebComponent - built upon Polymer 2.0.
+Simply pass an array of events and we'll schedule them to fit & display them for you.
 
-## Install the Polymer-CLI
-
-First, make sure you have the [Polymer CLI](https://www.npmjs.com/package/polymer-cli) installed. Then run `polymer serve` to serve your application locally.
-
-## Viewing Your Application
-
+## Demo
+<!---
 ```
-$ polymer serve
+<custom-element-demo>
+  <template>
+    <script src="../webcomponentsjs/webcomponents-lite.js"></script>
+    <link rel="import" href="dc-schedule.html">
+    <next-code-block></next-code-block>
+  </template>
+</custom-element-demo>
 ```
+-->
+```html
+<dom-bind id="demo-dom">
+  <template>
+    <dc-schedule date="[[date]]"
+             min-time="[[minTime]]"
+             max-time="[[maxTime]]"
+             empty-message="That day appears to be empty!">
+    </dc-schedule>
+  </template>
+</dom-bind>
 
-## Building Your Application
-
+<script>
+  var demo = document.querySelector('#demo-dom');
+  demo.date = new Date(2013, 2, 13, 9, 20);
+  demo.events = [
+    {
+      name: 'Keynote',
+      description: 'The keynote speech',
+      location: 'Grand Hall',
+      start: new Date(2013, 2, 1, 9, 20),
+      end: new Date(2013, 2, 1, 13, 50),
+      colour: '#00E4FF'
+    },
+    {
+      name: 'Redux Talk',
+      description: 'Flux Guise',
+      location: 'AB123',
+      start: new Date(2013, 2, 1, 13, 20),
+      end: new Date(2013, 2, 1, 14, 50),
+      colour: '#FFD500'
+    },
+    {
+      name: 'Polymer Talk',
+      description: 'Web components Guise',
+      location: 'Grand Hall',
+      start: new Date(2013, 2, 1, 13, 50),
+      end: new Date(2013, 2, 1, 15, 50)
+    },
+  ];
+  demo.minTime = new Date(2013, 2, 1, 9, 0);
+  demo.maxTime =  new Date(2013, 2, 1, 16, 0);
+</script>
 ```
-$ polymer build
-```
-
-This will create a `build/` folder with `bundled/` and `unbundled/` sub-folders
-containing a bundled (Vulcanized) and unbundled builds, both run through HTML,
-CSS, and JS optimizers.
-
-You can serve the built versions by giving `polymer serve` a folder to serve
-from:
-
-```
-$ polymer serve build/bundled
-```
-
-## Running Tests
-
-```
-$ polymer test
-```
-
-Your application is already set up to be tested via [web-component-tester](https://github.com/Polymer/web-component-tester). Run `polymer test` to run your application's test suite locally.
