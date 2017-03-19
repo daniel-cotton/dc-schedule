@@ -120,50 +120,21 @@ A schedule view
         };
       }
       getWeekday(date) {
-        return this._days[date.getDay()];
+        return this._days[this.date.getDay()];
       }
       getWeekday(date) {
-        return this._days[date.getDay()];
+        return this._days[this.date.getDay()];
       }
       getMonth(date) {
-        return this._months[date.getMonth()];
+        return this._months[this.date.getMonth()];
       }
       getDay(date) {
-        return date.getDate();
+        return this.date.getDate();
       }
       connectedCallback() {
         super.connectedCallback();
-        this.events2 = [
-          {
-            name: 'Keynote',
-            description: 'The keynote speech',
-            location: 'Grand Hall',
-            start: new Date(2013, 2, 1, 9, 20),
-            end: new Date(2013, 2, 1, 13, 50),
-            colour: '#00E4FF'
-          },
-          {
-            name: 'Redux Talk',
-            description: 'Flux Guise',
-            location: 'AB123',
-            start: new Date(2013, 2, 1, 13, 20),
-            end: new Date(2013, 2, 1, 14, 50),
-            colour: '#FFD500'
-          },
-          {
-            name: 'Polymer Talk',
-            description: 'Web components Guise',
-            location: 'Grand Hall',
-            start: new Date(2013, 2, 1, 13, 50),
-            end: new Date(2013, 2, 1, 15, 50),
-            colour: '#E6E6E6'
-          },
-        ];
-        this.minTime = new Date(2013, 2, 1, 9, 0);
-        this.maxTime = new Date(2013, 2, 1, 17, 0);
       }
     }
-
     window.customElements.define(DCSchedule.is, DCSchedule);
   </script>
 </dom-module>

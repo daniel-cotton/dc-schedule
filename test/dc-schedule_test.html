@@ -6,23 +6,126 @@
 
     <title>dc-schedule test</title>
 
-    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+    <script src="../../webcomponentsjs/webcomponents-loader.js"></script>
     <script src="../../web-component-tester/browser.js"></script>
 
     <link rel="import" href="../dc-schedule.html">
   </head>
   <body>
-    <test-fixture id="basic">
-      <template>
-        <dc-schedule></dc-schedule>
-      </template>
-    </test-fixture>
+  <dom-bind id="test-suite">
+    <template>
+      <test-fixture id="basic">
+        <dc-schedule id="schedule-1" date="[[date]]"
+                     min-time="[[minTime]]"
+                     max-time="[[maxTime]]"
+                     events="[[events]]">
+        </dc-schedule>
+      </test-fixture>
+      <test-fixture id="no-events">
+        <dc-schedule date="[[date]]"
+                     min-time="[[minTime]]"
+                     max-time="[[maxTime]]"
+                     empty-message="That day appears to be empty!">
+        </dc-schedule>
+      </test-fixture>
+    </template>
+  </dom-bind>
 
     <script>
-      suite('dc-schedule', function() {
-        test('instantiating the element works', function() {
-          var element = fixture('basic');
-          assert.equal(element.is, 'dc-schedule');
+      document.getElementById('basic').create();
+      document.getElementById('no-events').create();
+
+      var testOne = document.querySelector('#test-suite');
+      testOne.date = new Date();
+      testOne.minTime = new Date(2013, 2, 1, 9, 0);
+      testOne.maxTime = new Date(2013, 2, 1, 16, 0);
+      testOne.events = [
+        {
+          name: 'Keynote',
+          description: 'The keynote speech',
+          location: 'Grand Hall',
+          start: new Date(2013, 2, 1, 9, 20),
+          end: new Date(2013, 2, 1, 13, 50),
+          colour: '#00E4FF'
+        },
+        {
+          name: 'Redux Talk',
+          description: 'Flux Guise',
+          location: 'AB123',
+          start: new Date(2013, 2, 1, 13, 20),
+          end: new Date(2013, 2, 1, 14, 50),
+          colour: '#FFD500'
+        },
+        {
+          name: 'Polymer Talk',
+          description: 'Web components Guise',
+          location: 'Grand Hall',
+          start: new Date(2013, 2, 1, 13, 50),
+          end: new Date(2013, 2, 1, 15, 50)
+        },
+      ];
+
+        var schedule;
+        // Define current as the current date/time
+        var current = new Date();
+        // Define days of week constant
+        var week = ['Sunday',
+          'Monday',
+          'Tuesday',
+          'Wednesday',
+          'Thursday',
+          'Friday',
+          'Saturday'];
+        // Define month constant
+
+        // Run a11y test suite
+      suite('dc-schedule A11Y', function() {
+        a11ySuite('basic');
+      });
+
+        /*
+          Javascript Functions
+          Test Cases
+         */
+      suite('dc-schedule JS', function() {
+        test('getDay should return the correct day', function() {
+          // Select the first scheduler
+          schedule = document.querySelector('#schedule-1');
+          // Assert that current day returned by scheduler
+          // is actually the current day
+          assert.equal(schedule.getDay(), current.getDate());
+        });
+
+        test('getWeekday should return the correct day', function() {
+          // Select the first scheduler
+          schedule = document.querySelector('#schedule-1');
+
+          // Assert that current weekday returned by scheduler
+          // is actually the current weekday
+          assert.equal(schedule.getWeekday(), week[current.getDay()]);
+        });
+
+        test('getWeekday should return the correct day', function() {
+          // Select the first scheduler
+          schedule = document.querySelector('#schedule-1');
+
+          // Assert that current weekday returned by scheduler
+          // is actually the current weekday
+          assert.equal(schedule.getWeekday(), week[current.getDay()]);
+        });
+      });
+
+        /*
+           HTML Binding
+           Test Cases
+         */
+      suite('dc-schedule Binding', function() {
+        test('no-events should display custom text if set', function() {
+          schedule = fixture('no-events');
+          schedule.date = new Date();
+          schedule.minTime = new Date(2013, 2, 1, 9, 0);
+          schedule.maxTime = new Date(2013, 2, 1, 16, 0);
+          assert.equal(schedule.querySelector('#empty-message').innerText, "That day appears to be empty!");
         });
       });
     </script>

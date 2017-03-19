@@ -3,9 +3,7 @@
   "description": "A schedule view",
   "main": "dc-schedule.html",
   "dependencies": {
-    "polymer": "Polymer/polymer#^2.0.0-rc.2",
-    "paper-material": "PolymerElements/paper-material#2.0-preview",
-    "app-layout": "PolymerElements/app-layout#^0.10.7"
+    "polymer": "Polymer/polymer#^2.0.0-rc.2"
   },
   "keywords": [
     "webcomponent",

@@ -85,7 +85,7 @@ A schedule view partial - without title
       </style>
     </custom-style>
     <template is="dom-if" if="[[!_hasEvents(events)]]">
-      <p>[[emptyMessage]]</p>
+      <p id="empty-message">[[emptyMessage]]</p>
     </template>
     <template is="dom-if" if="[[_hasEvents(events)]]">
       <section id="headings">
