@@ -8,6 +8,7 @@
 
     <script src="../../webcomponentsjs/webcomponents-loader.js"></script>
     <script src="../../web-component-tester/browser.js"></script>
+    <script src="../node_modules/axe-core/axe.min.js" ></script>
 
     <link rel="import" href="../dc-schedule.html">
   </head>
@@ -82,12 +83,6 @@
         const month = ["January", "February", "March", "April", "May", "June",
           "July", "August", "September", "October", "November", "December"
         ];
-
-        // Run a11y test suite
-      suite('dc-schedule A11Y', function() {
-        a11ySuite('basic');
-      });
-
         /*
           Javascript Functions
           Test Cases
@@ -159,6 +154,30 @@
           assert.equal(Polymer.dom(schedulePartial.node.root).querySelector('#empty-message').innerText, "That day appears to be empty!");
         });
       });
+
+      // Run aXe test suite
+      suite('dc-schedule aXe', function() {
+        test('aXe should pass', function (done) {
+          axe.run(function (err, results) {
+            assert.equal(results.violations.length, 0, 'Should be no accessibility issues');
+            done(err);
+          });
+
+        })
+      });
+
+      /*
+
+      COMMENTED A11Y TEST SUITE
+      - Fixture itself fails in IE 11
+        [TODO] Identify issue and re-instate tests
+
+      // Run a11y test suite
+      suite('dc-schedule A11Y', function() {
+        a11ySuite('basic');
+      });
+      */
+
     </script>
   </body>
 </html>

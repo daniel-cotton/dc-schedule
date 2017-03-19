@@ -1,0 +1,25 @@
+{
+  "name": "dc-schedule",
+  "version": "1.0.0",
+  "description": "A webcomponent for Scheduling",
+  "main": "index.html",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/daniel-cotton/dc-schedule.git"
+  },
+  "author": "Daniel Cotton (dan@daniel-cotton.co.uk)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/daniel-cotton/dc-schedule/issues"
+  },
+  "homepage": "https://github.com/daniel-cotton/dc-schedule#readme",
+  "devDependencies": {
+    "axe-core": "^2.1.7"
+  }
+}
